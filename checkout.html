@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>Checkout - Sunny's Food Corner</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <h2>Checkout Summary</h2>
+    <ul id="checkout-summary"></ul>
+
+    <h3 id="total-amount"></h3>
+
+    <form>
+        <label>Name:</label>
+        <input type="text" required>
+        
+        <label>Address:</label>
+        <textarea required></textarea>
+
+        <label>Contact Number:</label>
+        <input type="text" required>
+
+        <label>Note:</label>
+        <textarea></textarea>
+
+        <button type="submit">Confirm Order</button>
+    </form>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const summary = document.getElementById('checkout-summary');
+        const totalAmount = document.getElementById('total-amount');
+
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        let total = 0;
+
+        cart.forEach(item => {
+            if (!item.name || !item.price) return;
+
+            const li = document.createElement('li');
+            li.textContent = `${item.name} - Rs. ${item.price}`;
+            summary.appendChild(li);
+
+            total += Number(item.price);
+        });
+
+        total += 190; // Delivery charges
+        totalAmount.textContent = `Total with Delivery: Rs. ${total}`;
+    });
+    </script>
+
+</body>
+</html>

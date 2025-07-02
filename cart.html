@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>Your Cart - Sunny's Food Corner</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="logo">Sunny's Food Corner</div>
+        <div class="nav-links">
+            <a href="aboutus.html">About Us</a>
+            <a href="contact.html">Contact</a>
+            <a href="cart.html" style="text-decoration: underline;">Cart</a>
+        </div>
+    </nav>
+
+    <!-- Cart Heading -->
+    <h1 class="cart-heading">Your Cart</h1>
+
+    <!-- Cart Section -->
+    <div class="cart-box">
+        <ul id="cart-list"></ul>
+        <h3>Total: Rs. <span id="total">0</span></h3>
+        <button id="checkout-btn" class="checkout-btn" disabled>Proceed to Checkout</button>
+    </div>
+
+    <!-- Back Button -->
+    <a href="index.html" class="back-button">&larr; Back to Menu</a>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const cartList = document.getElementById('cart-list');
+        const totalSpan = document.getElementById('total');
+        const checkoutBtn = document.getElementById('checkout-btn');
+
+        let total = 0;
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        cartList.innerHTML = '';
+
+        if (cart.length === 0) {
+            checkoutBtn.disabled = true;
+        } else {
+            checkoutBtn.disabled = false;
+        }
+
+        cart.forEach((item, index) => {
+            total += item.price;
+
+            const li = document.createElement('li');
+            li.innerHTML = `
+                ${item.name} - Rs. ${item.price}
+                <button class="remove-btn" onclick="removeItem(${index})">&times;</button>
+            `;
+            cartList.appendChild(li);
+        });
+
+        totalSpan.textContent = total;
+
+        checkoutBtn.addEventListener('click', () => {
+            window.location.href = 'checkout.html';
+        });
+    });
+
+    function removeItem(index) {
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        cart.splice(index, 1);
+        localStorage.setItem('cart', JSON.stringify(cart));
+        location.reload();
+    }
+    </script>
+
+</body>
+</html>
